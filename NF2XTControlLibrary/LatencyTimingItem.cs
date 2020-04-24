@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace nForce2XTLibrary
+﻿namespace nForce2XTLibrary
 {
     public partial class LatencyTimingItem : nForce2XTLibrary.TimingItem
     {

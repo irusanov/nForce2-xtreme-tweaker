@@ -76,7 +76,7 @@ namespace nForce2XTLibrary
 
         public int DropdownWidth
         {
-            get => dropdownWidth; 
+            get => dropdownWidth;
             set
             {
                 if (value > 0)

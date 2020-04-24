@@ -2,7 +2,7 @@
 
 namespace nForce2XT.Utils
 {
-    public class Util: IDisposable
+    public class Util : IDisposable
     {
         public uint SetBits(uint val, int offset, int n, uint newValue)
         {

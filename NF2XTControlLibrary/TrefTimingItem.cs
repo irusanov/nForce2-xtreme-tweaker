@@ -54,7 +54,8 @@
                 if (i < timing) index++;
             }
 
-            if (comboBoxTiming.SelectedIndex == -1 && IsValueValid(timing)) {
+            if (comboBoxTiming.SelectedIndex == -1 && IsValueValid(timing))
+            {
                 comboBoxTiming.Items.Insert(index, new CustomListItem(timing, string.Format(Format, timing)));
                 comboBoxTiming.SelectedIndex = index;
             }

@@ -28,7 +28,7 @@ namespace nForce2XT
 
             using (Mutex instanceMutex = new Mutex(true, mutexName, out _))
             {
-                
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 SplashForm.ShowSplashScreen();
