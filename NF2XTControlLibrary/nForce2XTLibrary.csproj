@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9429D281-17F2-46E3-914F-6B53708649D6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>nForce2XTLibrary</RootNamespace>
+    <AssemblyName>nForce2XTLib</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdvancedTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AdvancedTextBox.Designer.cs">
+      <DependentUpon>AdvancedTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LatencyTimingItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LatencyTimingItem.Designer.cs">
+      <DependentUpon>LatencyTimingItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrefTimingItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrefTimingItem.Designer.cs">
+      <DependentUpon>TrefTimingItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BooleanTimingItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BooleanTimingItem.Designer.cs">
+      <DependentUpon>BooleanTimingItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomListItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimingItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimingItem.Designer.cs">
+      <DependentUpon>TimingItem.cs</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AdvancedTextBox.resx">
+      <DependentUpon>AdvancedTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LatencyTimingItem.resx">
+      <DependentUpon>LatencyTimingItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrefTimingItem.resx">
+      <DependentUpon>TrefTimingItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BooleanTimingItem.resx">
+      <DependentUpon>BooleanTimingItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimingItem.resx">
+      <DependentUpon>TimingItem.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
