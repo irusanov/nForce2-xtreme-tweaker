@@ -77,7 +77,6 @@
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\PciDev.cs" />
-    <Compile Include="Components\Registers.cs" />
     <Compile Include="Components\TimingDef.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

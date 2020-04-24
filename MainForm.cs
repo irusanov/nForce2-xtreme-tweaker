@@ -58,6 +58,10 @@ namespace nForce2XT
              new TimingDef("AGPControllerLatency",  new PciDev(0, 30, 0, 0xC),  8, 8),
              new TimingDef("AGPBusLatency",         new PciDev(0, 30, 0, 0x18), 24, 8),
              new TimingDef("PCILatency",            new PciDev(0, 8, 0, 0x18),  24, 8),
+
+             new TimingDef("DIMM_B0_CFG",           new PciDev(0, 0, 2, 0x40), 0, 1),
+             new TimingDef("DIMM_B1_CFG",           new PciDev(0, 0, 2, 0x44), 0, 1),
+             new TimingDef("DIMM_A0_CFG",           new PciDev(0, 0, 2, 0x48), 0, 1),
         };
 
         private const ushort PCI_ADDR_PORT = 0xCF8;
@@ -118,10 +122,15 @@ namespace nForce2XT
             return Convert.ToInt32(utils.GetBits(value, offset, n));
         }
 
+        private TimingDef GetDefByName(string name)
+        {
+            return TimingDefs.Find(x => x.Name == name);
+        }
+
         private int ReadCASValue()
         {
             // Read value for DIMM_B0
-            TimingDef def = TimingDefs.Find(x => x.Name == "CAS");
+            TimingDef def = GetDefByName("CAS");
             uint reg = ReadPciReg(def.PciDev.GetPciAddressFull());
 
             // CAS is bits [5:4], bit 6 is Half Latency toggle
@@ -144,12 +153,12 @@ namespace nForce2XT
 
             if (changed.Length == 0) return;
 
-            TimingDef def = TimingDefs.Find(x => x.Name == changed[0].Name);
+            TimingDef def = GetDefByName(changed[0].Name);
             uint regValue = ReadPciReg(def.PciDev.GetPciAddressFull());
 
             foreach (nForce2XTLibrary.TimingItem item in changed)
             {
-                def = TimingDefs.Find(x => x.Name == item.Name);
+                def = GetDefByName(item.Name);
                 regValue = utils.SetBits(regValue, def.Offset, def.Bits, Convert.ToUInt32(item.Value));
             }
 
@@ -158,21 +167,27 @@ namespace nForce2XT
 
         private void PopulateTimingFromRegValue(nForce2XTLibrary.TimingItem[] items)
         {
-            TimingDef def = TimingDefs.Find(x => x.Name == items[0].Name);
+            TimingDef def = GetDefByName(items[0].Name);
             uint regValue = ReadPciReg(def.PciDev.GetPciAddressFull());
 
             foreach (nForce2XTLibrary.TimingItem item in items)
             {
-                def = TimingDefs.Find(x => x.Name == item.Name);
+                def = GetDefByName(item.Name);
                 item.Value = GetTimingFromRegValue(regValue, def.Offset, def.Bits);
             }
         }
 
         private void PopulateTimingFromRegValue(nForce2XTLibrary.TimingItem item)
         {
-            TimingDef def = TimingDefs.Find(x => x.Name == item.Name);
+            TimingDef def = GetDefByName(item.Name);
             uint regValue = ReadPciReg(def.PciDev.GetPciAddressFull());
             item.Value = GetTimingFromRegValue(regValue, def.Offset, def.Bits);
+        }
+
+        private bool IsDIMMInstalled(TimingDef def)
+        {
+            uint regValue = ReadPciReg(def.PciDev.GetPciAddressFull());
+            return utils.GetBits(regValue, def.Offset, def.Bits) == 1;
         }
 
         private void ReadTimings()
@@ -219,6 +234,33 @@ namespace nForce2XT
             PopulateTimingFromRegValue(AGPControllerLatency);
             PopulateTimingFromRegValue(AGPBusLatency);
             PopulateTimingFromRegValue(PCILatency);
+
+            if (!IsDIMMInstalled(GetDefByName("DIMM_B0_CFG")))
+            {
+                DIMM0DrvStrA.Readonly = true;
+                DIMM0DrvStrA.Enabled = false;
+                DIMM0DrvStrB.Readonly = true;
+                DIMM0SlewRate.Readonly = true;
+                DIMM0SlewRate.Enabled = false;
+            }
+
+            if (!IsDIMMInstalled(GetDefByName("DIMM_B1_CFG")))
+            {
+                DIMM1DrvStrA.Readonly = true;
+                DIMM1DrvStrA.Enabled = false;
+                DIMM1DrvStrB.Readonly = true;
+                DIMM1SlewRate.Readonly = true;
+                DIMM1SlewRate.Enabled = false;
+            }
+
+            if (!IsDIMMInstalled(GetDefByName("DIMM_A0_CFG")))
+            {
+                DIMM2DrvStrA.Readonly = true;
+                DIMM2DrvStrA.Enabled = false;
+                DIMM2DrvStrB.Readonly = true;
+                DIMM2SlewRate.Readonly = true;
+                DIMM2SlewRate.Enabled = false;
+            }
         }
 
         public MainForm()
@@ -374,7 +416,7 @@ namespace nForce2XT
             if (BurstMode.Changed)
             {
                 // A0, A8, B0
-                TimingDef def = TimingDefs.Find(x => x.Name == BurstMode.Name);
+                TimingDef def = GetDefByName(BurstMode.Name);
                 byte reg = def.PciDev.Offset;
                 uint pciDev = def.PciDev.GetPciAddress();
                 uint regValue = ols.ReadPciConfigDword(pciDev, reg);
@@ -389,7 +431,7 @@ namespace nForce2XT
 
             if (DriveStrengthMode.Changed)
             {
-                TimingDef def = TimingDefs.Find(x => x.Name == DriveStrengthMode.Name);
+                TimingDef def = GetDefByName(DriveStrengthMode.Name);
                 byte reg = def.PciDev.Offset;
                 uint pciDev = def.PciDev.GetPciAddress();
                 uint regValue = ols.ReadPciConfigDword(pciDev, reg);
@@ -438,7 +480,7 @@ namespace nForce2XT
         {
             if (CPUDisconnect.Changed)
             {
-                TimingDef def = TimingDefs.Find(x => x.Name == CPUDisconnect.Name);
+                TimingDef def = GetDefByName(CPUDisconnect.Name);
                 byte reg = def.PciDev.Offset;
                 uint pciDev = def.PciDev.GetPciAddress();
                 uint regValue = ols.ReadPciConfigDword(pciDev, reg);
