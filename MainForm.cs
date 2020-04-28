@@ -4,6 +4,7 @@ using OpenLibSys;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
@@ -235,7 +236,7 @@ namespace nForce2XT
             PopulateTimingFromRegValue(AGPBusLatency);
             PopulateTimingFromRegValue(PCILatency);
 
-            if (!IsDIMMInstalled(GetDefByName("DIMM_B0_CFG")))
+           /* if (!IsDIMMInstalled(GetDefByName("DIMM_B0_CFG")))
             {
                 DIMM0DrvStrA.Readonly = true;
                 DIMM0DrvStrA.Enabled = false;
@@ -260,7 +261,7 @@ namespace nForce2XT
                 DIMM2DrvStrB.Readonly = true;
                 DIMM2SlewRate.Readonly = true;
                 DIMM2SlewRate.Enabled = false;
-            }
+            }*/
         }
 
         public MainForm()
@@ -289,6 +290,8 @@ namespace nForce2XT
             Text = $"{Application.ProductName} {Application.ProductVersion.Substring(0, Application.ProductVersion.LastIndexOf('.'))}";
 #if DEBUG
             Text += " (debug)";
+#else
+            Text += " beta";   
 #endif
 
             trayMenuItemApp.Text = Text;
@@ -481,15 +484,13 @@ namespace nForce2XT
             if (CPUDisconnect.Changed)
             {
                 TimingDef def = GetDefByName(CPUDisconnect.Name);
-                byte reg = def.PciDev.Offset;
-                uint pciDev = def.PciDev.GetPciAddress();
-                uint regValue = ols.ReadPciConfigDword(pciDev, reg);
+                uint regValue = ReadPciReg(def.PciDev.GetPciAddressFull());
 
                 uint selectedValue = Convert.ToUInt32(CPUDisconnect.Value);
                 regValue = utils.SetBits(regValue, def.Offset, def.Bits, selectedValue);
                 regValue = utils.SetBits(regValue, 31, 1, ~selectedValue);
 
-                ols.WritePciConfigDword(pciDev, reg, regValue);
+                ols.WriteIoPortDwordEx(PCI_DATA_PORT, regValue);
             }
 
             WriteTimings(new nForce2XTLibrary.TimingItem[] { AGPFastWrite });
@@ -611,7 +612,12 @@ namespace nForce2XT
             SplashForm.CloseForm();
             ShowWindow();
             MinimizeFootprint();
-            TurnOffFormLevelDoubleBuffering();
+        }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            if (enableFormLevelDoubleBuffering)
+                TurnOffFormLevelDoubleBuffering();
         }
     }
 }

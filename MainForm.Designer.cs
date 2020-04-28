@@ -193,19 +193,19 @@
             this.tableLayoutPanel2.Controls.Add(this.buttonApply, 2, 1);
             this.tableLayoutPanel2.Controls.Add(this.buttonRefresh, 1, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 484);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 480);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(389, 39);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(383, 39);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // buttonApply
             // 
             this.buttonApply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonApply.Location = new System.Drawing.Point(307, 8);
+            this.buttonApply.Location = new System.Drawing.Point(301, 8);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 0;
@@ -215,7 +215,7 @@
             // 
             // buttonRefresh
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(226, 8);
+            this.buttonRefresh.Location = new System.Drawing.Point(220, 8);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonRefresh.TabIndex = 2;
@@ -515,7 +515,7 @@
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
@@ -525,13 +525,13 @@
             // 
             // MainMenu
             // 
-            this.MainMenu.BackColor = System.Drawing.SystemColors.Window;
+            this.MainMenu.BackColor = System.Drawing.SystemColors.Control;
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(389, 24);
+            this.MainMenu.Size = new System.Drawing.Size(383, 24);
             this.MainMenu.TabIndex = 8;
             this.MainMenu.Text = "MainMenu";
             // 
@@ -603,11 +603,11 @@
             // 
             this.tabControlSettings.Controls.Add(this.DRAMTab);
             this.tabControlSettings.Controls.Add(this.ChipsetTab);
-            this.tabControlSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabControlSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabControlSettings.Location = new System.Drawing.Point(0, 24);
             this.tabControlSettings.Name = "tabControlSettings";
             this.tabControlSettings.SelectedIndex = 0;
-            this.tabControlSettings.Size = new System.Drawing.Size(389, 460);
+            this.tabControlSettings.Size = new System.Drawing.Size(383, 454);
             this.tabControlSettings.TabIndex = 9;
             // 
             // DRAMTab
@@ -616,8 +616,7 @@
             this.DRAMTab.Controls.Add(this.tableLayoutPanel4);
             this.DRAMTab.Location = new System.Drawing.Point(4, 22);
             this.DRAMTab.Name = "DRAMTab";
-            this.DRAMTab.Padding = new System.Windows.Forms.Padding(3);
-            this.DRAMTab.Size = new System.Drawing.Size(381, 434);
+            this.DRAMTab.Size = new System.Drawing.Size(375, 428);
             this.DRAMTab.TabIndex = 0;
             this.DRAMTab.Text = "DRAM";
             // 
@@ -627,8 +626,7 @@
             this.ChipsetTab.Controls.Add(this.tableLayoutPanel7);
             this.ChipsetTab.Location = new System.Drawing.Point(4, 22);
             this.ChipsetTab.Name = "ChipsetTab";
-            this.ChipsetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ChipsetTab.Size = new System.Drawing.Size(381, 434);
+            this.ChipsetTab.Size = new System.Drawing.Size(375, 428);
             this.ChipsetTab.TabIndex = 1;
             this.ChipsetTab.Text = "Chipset";
             // 
@@ -646,7 +644,7 @@
             this.tableLayoutPanel7.Controls.Add(this.AGPBusLatency, 1, 5);
             this.tableLayoutPanel7.Controls.Add(this.PCILatency, 1, 6);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 8;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
@@ -1484,10 +1482,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(389, 523);
+            this.ClientSize = new System.Drawing.Size(383, 519);
             this.Controls.Add(this.tabControlSettings);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.MainMenu);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MainMenu;
@@ -1498,6 +1497,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
