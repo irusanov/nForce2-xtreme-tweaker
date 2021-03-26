@@ -166,6 +166,25 @@ namespace nForce2XT
             ols.WriteIoPortDwordEx(PCI_DATA_PORT, regValue);
         }
 
+        private void WriteDoubledTimings(nForce2XTLibrary.TimingItem[] l)
+        {
+            nForce2XTLibrary.TimingItem[] changed = Array.FindAll(l, x => x.Changed);
+
+            if (changed.Length == 0) return;
+
+            TimingDef def = GetDefByName(changed[0].Name);
+            uint regValue = ReadPciReg(def.PciDev.GetPciAddressFull());
+
+            foreach (nForce2XTLibrary.TimingItem item in changed)
+            {
+                def = GetDefByName(item.Name);
+                uint value = Convert.ToUInt32((item.Value << 4) | item.Value);
+                regValue = utils.SetBits(regValue, def.Offset, def.Bits * 2, value);
+            }
+
+            ols.WriteIoPortDwordEx(PCI_DATA_PORT, regValue);
+        }
+
         private void PopulateTimingFromRegValue(nForce2XTLibrary.TimingItem[] items)
         {
             TimingDef def = GetDefByName(items[0].Name);
@@ -291,7 +310,7 @@ namespace nForce2XT
 #if DEBUG
             Text += " (debug)";
 #else
-            Text += " beta";   
+            Text += " beta 2";
 #endif
 
             trayMenuItemApp.Text = Text;
@@ -411,10 +430,10 @@ namespace nForce2XT
             WriteTimings(new nForce2XTLibrary.TimingItem[] { SuperBypass });
             WriteTimings(new nForce2XTLibrary.TimingItem[] { DataScavengedRate });
 
-            WriteTimings(new nForce2XTLibrary.TimingItem[] { DIMM0DrvStrA, DIMM1DrvStrA, DIMM0SlewRate, DIMM1SlewRate });
-            WriteTimings(new nForce2XTLibrary.TimingItem[] { DIMM0DrvStrB, DIMM1DrvStrB });
-            WriteTimings(new nForce2XTLibrary.TimingItem[] { DIMM2DrvStrA, DIMM2SlewRate });
-            WriteTimings(new nForce2XTLibrary.TimingItem[] { DIMM2DrvStrB });
+            WriteDoubledTimings(new nForce2XTLibrary.TimingItem[] { DIMM0DrvStrA, DIMM1DrvStrA, DIMM0SlewRate, DIMM1SlewRate });
+            WriteDoubledTimings(new nForce2XTLibrary.TimingItem[] { DIMM0DrvStrB, DIMM1DrvStrB });
+            WriteDoubledTimings(new nForce2XTLibrary.TimingItem[] { DIMM2DrvStrA, DIMM2SlewRate });
+            WriteDoubledTimings(new nForce2XTLibrary.TimingItem[] { DIMM2DrvStrB });
 
             if (BurstMode.Changed)
             {
