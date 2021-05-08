@@ -72,6 +72,12 @@
     <Compile Include="TimingItem.Designer.cs">
       <DependentUpon>TimingItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Slider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Slider.designer.cs">
+      <DependentUpon>Slider.cs</DependentUpon>
+    </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TimingItem.resx">
       <DependentUpon>TimingItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Slider.resx">
+      <DependentUpon>Slider.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
