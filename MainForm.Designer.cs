@@ -118,7 +118,17 @@
             this.AGPControllerLatency = new nForce2XTLibrary.LatencyTimingItem();
             this.AGPBusLatency = new nForce2XTLibrary.LatencyTimingItem();
             this.PCILatency = new nForce2XTLibrary.LatencyTimingItem();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.slider1 = new nForce2XTLibrary.Slider();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBoxCpuFreq = new System.Windows.Forms.TextBox();
+            this.textBoxCpuMulti = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBoxDRAMFreq = new System.Windows.Forms.TextBox();
+            this.textBoxDRAM_FSB = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.trayIconMenu.SuspendLayout();
@@ -134,6 +144,8 @@
             this.DRAMTab.SuspendLayout();
             this.ChipsetTab.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -1311,6 +1323,7 @@
             this.tabControlSettings.SelectedIndex = 0;
             this.tabControlSettings.Size = new System.Drawing.Size(383, 454);
             this.tabControlSettings.TabIndex = 9;
+            this.tabControlSettings.SelectedIndexChanged += new System.EventHandler(this.TabControlSettings_SelectedIndexChanged);
             // 
             // DRAMTab
             // 
@@ -1346,11 +1359,12 @@
             this.tableLayoutPanel7.Controls.Add(this.AGPControllerLatency, 1, 4);
             this.tableLayoutPanel7.Controls.Add(this.AGPBusLatency, 1, 5);
             this.tableLayoutPanel7.Controls.Add(this.PCILatency, 1, 6);
-            this.tableLayoutPanel7.Controls.Add(this.slider1, 1, 8);
+            this.tableLayoutPanel7.Controls.Add(this.groupBox2, 1, 8);
+            this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel8, 1, 9);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 10;
+            this.tableLayoutPanel7.RowCount = 11;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
@@ -1359,6 +1373,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(375, 428);
@@ -1481,22 +1496,141 @@
             this.PCILatency.TabIndex = 7;
             this.PCILatency.Value = -1;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox2.Controls.Add(this.slider1);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(13, 181);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(349, 49);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "PLL";
+            // 
             // slider1
             // 
             this.slider1.AutoSize = true;
             this.slider1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.slider1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slider1.Coeff = 1D;
+            this.slider1.Dock = System.Windows.Forms.DockStyle.Top;
             this.slider1.LargeChange = 5;
-            this.slider1.Location = new System.Drawing.Point(13, 181);
+            this.slider1.Location = new System.Drawing.Point(3, 16);
             this.slider1.Maximum = 350;
             this.slider1.Minimum = 50;
             this.slider1.Name = "slider1";
-            this.slider1.Size = new System.Drawing.Size(349, 30);
+            this.slider1.Size = new System.Drawing.Size(343, 30);
             this.slider1.SmallChange = 1;
             this.slider1.TabIndex = 9;
             this.slider1.TickFrequency = 1;
             this.slider1.TickStyle = System.Windows.Forms.TickStyle.None;
             this.slider1.Value = 50;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel8.ColumnCount = 4;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.Controls.Add(this.label11, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.label12, 2, 0);
+            this.tableLayoutPanel8.Controls.Add(this.textBoxCpuFreq, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.textBoxCpuMulti, 3, 0);
+            this.tableLayoutPanel8.Controls.Add(this.label13, 0, 1);
+            this.tableLayoutPanel8.Controls.Add(this.label14, 2, 1);
+            this.tableLayoutPanel8.Controls.Add(this.textBoxDRAMFreq, 1, 1);
+            this.tableLayoutPanel8.Controls.Add(this.textBoxDRAM_FSB, 3, 1);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(13, 236);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 2;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(349, 52);
+            this.tableLayoutPanel8.TabIndex = 11;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label11.Location = new System.Drawing.Point(3, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(81, 26);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "CPU Freq";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label12.Location = new System.Drawing.Point(177, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(81, 26);
+            this.label12.TabIndex = 1;
+            this.label12.Text = "Multi";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textBoxCpuFreq
+            // 
+            this.textBoxCpuFreq.Location = new System.Drawing.Point(90, 3);
+            this.textBoxCpuFreq.Name = "textBoxCpuFreq";
+            this.textBoxCpuFreq.ReadOnly = true;
+            this.textBoxCpuFreq.Size = new System.Drawing.Size(81, 20);
+            this.textBoxCpuFreq.TabIndex = 2;
+            this.textBoxCpuFreq.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxCpuMulti
+            // 
+            this.textBoxCpuMulti.Location = new System.Drawing.Point(264, 3);
+            this.textBoxCpuMulti.Name = "textBoxCpuMulti";
+            this.textBoxCpuMulti.ReadOnly = true;
+            this.textBoxCpuMulti.Size = new System.Drawing.Size(82, 20);
+            this.textBoxCpuMulti.TabIndex = 3;
+            this.textBoxCpuMulti.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label13.Location = new System.Drawing.Point(3, 26);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(81, 26);
+            this.label13.TabIndex = 4;
+            this.label13.Text = "DRAM";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label14.Location = new System.Drawing.Point(177, 26);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(81, 26);
+            this.label14.TabIndex = 5;
+            this.label14.Text = "DRAM:FSB";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textBoxDRAMFreq
+            // 
+            this.textBoxDRAMFreq.Location = new System.Drawing.Point(90, 29);
+            this.textBoxDRAMFreq.Name = "textBoxDRAMFreq";
+            this.textBoxDRAMFreq.ReadOnly = true;
+            this.textBoxDRAMFreq.Size = new System.Drawing.Size(81, 20);
+            this.textBoxDRAMFreq.TabIndex = 6;
+            this.textBoxDRAMFreq.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxDRAM_FSB
+            // 
+            this.textBoxDRAM_FSB.Location = new System.Drawing.Point(264, 29);
+            this.textBoxDRAM_FSB.Name = "textBoxDRAM_FSB";
+            this.textBoxDRAM_FSB.ReadOnly = true;
+            this.textBoxDRAM_FSB.Size = new System.Drawing.Size(82, 20);
+            this.textBoxDRAM_FSB.TabIndex = 7;
+            this.textBoxDRAM_FSB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // MainForm
             // 
@@ -1545,6 +1679,10 @@
             this.ChipsetTab.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1638,6 +1776,16 @@
         private nForce2XTLibrary.AdvancedTextBox advancedTextBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private nForce2XTLibrary.Slider slider1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBoxCpuFreq;
+        private System.Windows.Forms.TextBox textBoxCpuMulti;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxDRAMFreq;
+        private System.Windows.Forms.TextBox textBoxDRAM_FSB;
     }
 }
 

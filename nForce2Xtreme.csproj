@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="Utils\NativeMethods.cs" />
     <Compile Include="Utils\Ols.cs" />
+    <Compile Include="Utils\QueryPerformance.cs" />
     <Compile Include="Utils\Util.cs" />
     <EmbeddedResource Include="AboutWindow.resx">
       <DependentUpon>AboutWindow.cs</DependentUpon>

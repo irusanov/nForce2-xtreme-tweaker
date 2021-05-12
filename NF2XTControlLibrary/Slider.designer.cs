@@ -41,9 +41,9 @@
             // 
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.Window;
+            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.Control;
             this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
@@ -56,17 +56,16 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(274, 30);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(284, 30);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // buttonDec
             // 
-            this.buttonDec.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonDec.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonDec.Font = new System.Drawing.Font("Symbol", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.buttonDec.Location = new System.Drawing.Point(3, 3);
             this.buttonDec.Name = "buttonDec";
-            this.buttonDec.Size = new System.Drawing.Size(14, 24);
+            this.buttonDec.Size = new System.Drawing.Size(24, 24);
             this.buttonDec.TabIndex = 0;
             this.buttonDec.Text = "-";
             this.buttonDec.UseVisualStyleBackColor = true;
@@ -74,10 +73,9 @@
             // 
             // buttonInc
             // 
-            this.buttonInc.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonInc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonInc.Font = new System.Drawing.Font("Symbol", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.buttonInc.Location = new System.Drawing.Point(177, 3);
+            this.buttonInc.Location = new System.Drawing.Point(187, 3);
             this.buttonInc.Name = "buttonInc";
             this.buttonInc.Size = new System.Drawing.Size(24, 24);
             this.buttonInc.TabIndex = 1;
@@ -89,9 +87,9 @@
             // trackBar
             // 
             this.trackBar.AutoSize = false;
-            this.trackBar.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBar.BackColor = System.Drawing.SystemColors.Control;
             this.trackBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trackBar.Location = new System.Drawing.Point(23, 3);
+            this.trackBar.Location = new System.Drawing.Point(33, 3);
             this.trackBar.Name = "trackBar";
             this.trackBar.Size = new System.Drawing.Size(148, 24);
             this.trackBar.TabIndex = 2;
@@ -103,7 +101,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(207, 0);
+            this.label1.Location = new System.Drawing.Point(217, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(64, 30);
             this.label1.TabIndex = 3;
@@ -119,7 +117,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;
             this.Name = "Slider";
-            this.Size = new System.Drawing.Size(274, 30);
+            this.Size = new System.Drawing.Size(284, 30);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).EndInit();

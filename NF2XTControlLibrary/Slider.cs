@@ -58,7 +58,27 @@ namespace nForce2XTLibrary
         public int Value
         {
             get { return trackBar.Value; }
-            set { trackBar.Value = value; }
+            set
+            {
+                if (value >= trackBar.Minimum && value <= trackBar.Maximum)
+                {
+                    trackBar.Value = value;
+                    label1.Text = $"{(value * Coeff):F2}MHz";
+                }
+            }
+        }
+
+        private double coeff = 1.0;
+        public double Coeff {
+            get => coeff;
+            set
+            {
+                if (coeff != value)
+                {
+                    coeff = value;
+                    label1.Text = $"{(Value * coeff):F2}MHz";
+                }
+            }
         }
 
         private void ButtonInc_Click(object sender, EventArgs e)
@@ -79,8 +99,7 @@ namespace nForce2XTLibrary
 
         private void TrackBar_ValueChanged(object sender, EventArgs e)
         {
-            this.Value = trackBar.Value;
-            label1.Text = $"{Value:F2}MHz";
+            Value = trackBar.Value;
             UpdateButtonsState();
         }
 

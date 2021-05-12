@@ -1,4 +1,4 @@
-﻿using nForce2XT.Components;
+using nForce2XT.Components;
 using nForce2XT.Utils;
 using OpenLibSys;
 using System;
@@ -73,6 +73,7 @@ namespace nForce2XT
         private readonly Ols ols;
         private readonly Util utils;
         private readonly Nforce2Pll pll;
+        private readonly QueryPerformance qpc = new QueryPerformance();
 
         private void CheckOlsStatus()
         {
@@ -524,9 +525,7 @@ namespace nForce2XT
             WriteTimings(new nForce2XTLibrary.TimingItem[] { PCILatency });
 
             if (pll.SetFsb((uint)slider1.Value))
-                slider1.Value = (int)pll.ReadFsb();
-
-            ShowCPUSpeed();
+                UpdatePllSlider();
         }
 
         private void ButtonApply_Click(object sender, EventArgs e)
@@ -636,55 +635,7 @@ namespace nForce2XT
             MinimizeBox = true;
         }
 
-        public class QueryPerfCounter
-        {
-            [DllImport("KERNEL32")]
-            private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
-            [DllImport("Kernel32.dll")]
-            private static extern bool QueryPerformanceFrequency(out long lpFrequency);
-            private long start;
-            private long stop;
-            private long frequency;
-            double multiplier = 1.0e6;  // usecs / sec
-
-            public QueryPerfCounter()
-            {
-                if (QueryPerformanceFrequency(out frequency) == false)
-                {
-                    // Frequency not supported
-                    throw new System.ComponentModel.Win32Exception();
-                }
-            }
-
-            public void Start()
-            {
-                QueryPerformanceCounter(out start);
-            }
-
-            public void Stop()
-            {
-                QueryPerformanceCounter(out stop);
-            }
-
-            public double Duration(int iterations)
-            {
-                return ((((stop - start) * multiplier) / frequency) / iterations);
-            }
-        }
-
-        private long GetQPCTime()
-        {
-            NativeMethods.QueryPerformanceCounter(out long qpcTime);
-            return qpcTime;
-        }
-
-        private long GetQPCRate()
-        {
-            NativeMethods.QueryPerformanceFrequency(out long qpcRate);
-            return qpcRate;
-        }
-
-        private void ShowCPUSpeed()
+        private void UpdatePllSlider()
         {
             // https://github.com/torvalds/linux/blob/master/drivers/cpufreq/powernow-k7.c#L78
             int[] fid_codes = {
@@ -694,56 +645,29 @@ namespace nForce2XT
                 150, 225, 160, 165, 170, 180, 230, 240,
             };
 
-            //new Thread(() =>
-            //{
-                //int iterations = 6;
-                double qpcRate = GetQPCRate();
-                uint eax = 0;
-                uint edx = 0;
-                double frequency = -1;
-                int retries = 6;
+            uint eax = 0;
+            uint edx = 0;
+          
+            double frequency = qpc.MeasureCpuSpeed();
+            int tfsb = (int)pll.ReadFsb();
 
-                while (frequency < 0 && retries > 0)
-                {
-                    ols.Rdtsc(ref eax, ref edx);
-                    long rdtscStart = eax;
-                    long qpcStart = GetQPCTime();
-
-                    Thread.Sleep(250);
-
-                    ols.Rdtsc(ref eax, ref edx);
-                    long rdtscEnd = eax;
-
-                    long rdtscElapsed = rdtscEnd - rdtscStart;
-                    long qpcElapsed = GetQPCTime() - qpcStart;
-
-                    // frequency = 1.0e6 * rdtscElapsed / (qpcElapsed / qpcRate) / 1000000000000;
-                    frequency = rdtscElapsed / (qpcElapsed / qpcRate) / 1000000;
-                    retries--;
-                }
-
-                ols.Rdmsr(0xC0010042, ref eax, ref edx);
-                byte fid = (byte)(eax & 0xff);
+            ols.Rdmsr(0xC0010042, ref eax, ref edx);
+            byte fid = (byte)(eax & 0xff);
                 
-                double multi = fid_codes[fid] / 10;
-                double fsb = frequency / multi;
+            double multi = fid_codes[fid] / 10;
+            double fsb = frequency / multi;
 
-                MessageBox.Show(
-                    $"CPU Freq: {frequency:f2} MHz\n" +
-                    $"CPU MP: x{multi:f1}\n" +
-                    $"Real FSB: {fsb:f2} MHz");
-            //});
+            textBoxCpuFreq.Text = $"{frequency:f2} MHz";
+            textBoxCpuMulti.Text = $"x{multi:f1}";
+
+            slider1.Value = tfsb;
+            slider1.Coeff = fsb / tfsb;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
             SplashForm.CloseForm();
             ShowWindow();
-            //MessageBox.Show($"{pll.ReadFsb():f2}\n{Convert.ToSingle(pll.ReadFsb(true)):f2}");
-            slider1.Value = (int)pll.ReadFsb();
-
-            ShowCPUSpeed();
-
             MinimizeFootprint();
         }
 
@@ -751,6 +675,17 @@ namespace nForce2XT
         {
             if (enableFormLevelDoubleBuffering)
                 TurnOffFormLevelDoubleBuffering();
+
+            pll.GetPrevPll(200.45 - 0.25);
+            pll.GetNextPll(200.45 + 0.25);
+        }
+
+        private void TabControlSettings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControlSettings.SelectedIndex == 1)
+            {
+                UpdatePllSlider();
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using OpenLibSys;
 using System;
+using System.Collections.Generic;
 
 namespace nForce2XT.Components
 {
@@ -7,23 +8,25 @@ namespace nForce2XT.Components
     {
         private const ushort PCI_VENDOR_ID_NVIDIA = 0x10de;
         private const ushort PCI_DEVICE_ID_NVIDIA_NFORCE2 = 0x01e0;
-        private const byte NFORCE2_XTAL = 25;
+        private const double NFORCE2_XTAL = 25.0;
         private const byte NFORCE2_BOOTFSB = 0x48;
         private const byte NFORCE2_PLLENABLE = 0xa8;
         private const byte NFORCE2_PLLREG = 0xa4;
         private const byte NFORCE2_PLLADR = 0xa0;
         private readonly uint Nforce2Dev;
         private readonly Ols ols = new Ols();
+        //private readonly List<KeyValuePair<double, int>> PossibleFsb = new List<KeyValuePair<double, int>>();
+        private readonly SortedList<double, int> PossibleFsb = new SortedList<double, int>();
 
-        private static uint MakePll(uint mul, uint div)
+        private static int MakePll(byte mul, byte div)
         {
             return 0x100000 | (mul << 8) | div;
         }
 
-        internal static uint CalcFsb(uint pll)
+        internal static double CalcFsb(int pll)
         {
-            uint mul = (pll >> 8) & 0xff;
-            uint div = pll & 0xff;
+            byte mul = (byte)((pll >> 8) & 0xff);
+            byte div = (byte)(pll & 0xff);
 
             if (div > 0)
                 return NFORCE2_XTAL * mul / div;
@@ -31,18 +34,18 @@ namespace nForce2XT.Components
             return 0;
         }
 
-        internal static uint CalcPll(uint fsb)
+        internal static int CalcPll(uint fsb)
         {
-            uint xmul, xdiv;
-            uint mul = 0, div = 0;
+            byte xmul, xdiv;
+            byte mul = 0, div = 0;
             int tried = 0;
 
             /* Try to calculate multiplier and divider up to 4 times */
             while (((mul == 0) || (div == 0)) && (tried <= 3))
             {
                 for (xdiv = 2; xdiv <= 0x80; xdiv++)
-                    for (xmul = 1; xmul <= 0xfe; xmul++)
-                        if (CalcFsb(MakePll(xmul, xdiv)) == fsb + tried)
+                    for (xmul = 0xf0; xmul <= 0xfa; xmul++)
+                        if (CalcFsb(MakePll(xmul, xdiv)) == (fsb * 1.0) + tried)
                         {
                             mul = xmul;
                             div = xdiv;
@@ -56,7 +59,7 @@ namespace nForce2XT.Components
             return MakePll(mul, div);
         }
 
-        internal bool WritePll(uint pll)
+        internal bool WritePll(int pll)
         {
             bool res = true;
             /* Set the pll addr. to 0x00 */
@@ -64,7 +67,7 @@ namespace nForce2XT.Components
 
             /* Now write the value in all 64 registers */
             for (var temp = 0; temp <= 0x3f; temp++)
-                res = ols.WritePciConfigDwordEx(Nforce2Dev, NFORCE2_PLLREG, pll) == 1;
+                res = ols.WritePciConfigDwordEx(Nforce2Dev, NFORCE2_PLLREG, Convert.ToUInt32(pll)) == 1;
 
             return res;
         }
@@ -91,7 +94,7 @@ namespace nForce2XT.Components
 
 	        /* Use PLL register FSB value */
 	        temp = ols.ReadPciConfigDword(Nforce2Dev, NFORCE2_PLLREG);
-            fsb = CalcFsb(temp);
+            fsb = (uint)CalcFsb(Convert.ToInt32(temp));
 
 	        return fsb;
         }
@@ -101,7 +104,7 @@ namespace nForce2XT.Components
             uint temp = 0;
             uint tfsb;
             int diff = 0;
-            uint pll = 0;
+            int pll = 0;
 
             /*if ((fsb > 350) || (fsb < 50))
             {
@@ -156,11 +159,68 @@ namespace nForce2XT.Components
             return true;
         }
 
+        public int GetNextPll(double fsb)
+        {
+            foreach (var item in PossibleFsb)
+            {
+                if (item.Key > fsb)
+                {
+                    Console.WriteLine(item.Key);
+                    return item.Value;
+                }
+            }
+            return -1;
+        }
+
+        public int GetPrevPll(double fsb)
+        {
+            int ret = -1;
+            double d = 0;
+            foreach (var item in PossibleFsb)
+            {
+                if (item.Key >= fsb)
+                    break;
+
+                d = item.Key;
+                ret = item.Value;
+            }
+
+            Console.WriteLine(d);
+            return ret;
+        }
+
+        internal void GenerateFsbTable()
+        {
+            byte xmul, xdiv;
+
+            for (xdiv = 2; xdiv <= 0x80; xdiv++)
+            {
+                for (xmul = 1; xmul <= 0xfe; xmul++)
+                {
+                    int pll = MakePll(xmul, xdiv);
+                    double fsb = Math.Round(CalcFsb(pll), 2, MidpointRounding.AwayFromZero);
+
+                    if (fsb >= 30 && fsb <= 350 && !PossibleFsb.ContainsKey(fsb))
+                    {
+                        PossibleFsb.Add(fsb, pll);
+                    }
+                }
+            }
+
+            foreach (var item in PossibleFsb)
+            {
+                Console.WriteLine($"{item.Key:f2}: 0x{item.Value:X8}");
+            }
+        }
+
         public Nforce2Pll()
         {
             Nforce2Dev = ols.FindPciDeviceById(PCI_VENDOR_ID_NVIDIA, PCI_DEVICE_ID_NVIDIA_NFORCE2, 0);
+
             //if (Nforce2Dev == 0xFFFFFFFF)
             //    throw new Exception("Not a NForce2 chipset");
+
+            GenerateFsbTable();
         }
     }
 }

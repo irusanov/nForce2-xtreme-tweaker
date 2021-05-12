@@ -18,11 +18,5 @@ namespace nForce2XT.Utils
 
         [DllImport("psapi.dll")]
         public static extern int EmptyWorkingSet(IntPtr hwProc);
-
-        [DllImport("Kernel32.dll")]
-        public static extern bool QueryPerformanceFrequency(out long lpFrequency);
-
-        [DllImport("Kernel32.dll")]
-        public static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
     }
 }
