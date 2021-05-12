@@ -55,7 +55,7 @@ namespace nForce2XT
              new TimingDef("CPUDisconnect",         new PciDev(0, 0, 0, 0x6C), 28, 1),
 
              new TimingDef("AGPFastWrite",          new PciDev(0, 0, 0, 0x44),  4, 1),
-             new TimingDef("AGPSBA",                new PciDev(0, 0, 0, 0x48),  8, 2),
+             new TimingDef("AGPSBA",                new PciDev(0, 0, 0, 0x48),  9, 1),
              new TimingDef("AGPControllerLatency",  new PciDev(0, 30, 0, 0xC),  8, 8),
              new TimingDef("AGPBusLatency",         new PciDev(0, 30, 0, 0x18), 24, 8),
              new TimingDef("PCILatency",            new PciDev(0, 8, 0, 0x18),  24, 8),
